@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:15
+    container_name: psql-players
+    environment:
+       POSTGRES_USER: mamr
+       POSTGRES_PASSWORD: 123
+    networks:
+     - psql-net
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - db-vol:/var/lib/postgresql/data
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - targeted: 8080
+      - published: 8080
+    networks:
+      - psql-net    
+networks:
+  - psql-net:
+volumes:
+  - db-vol:

@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: psql-players
+    environment:
+      POSTGRES_USER: mamr
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: intermilan
+    volumes:
+      - ./db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - db-vol:/var/lib/postgresql/data
+    networks:
+      - psql-net
+    restart: always
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - psql-net
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: flask
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - psql-net
+    restart: always
+
+  frontend:
+    image: nginx:alpine
+    container_name: frontend-ui
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    networks:
+      - psql-net
+    restart: always
+
+networks:
+  psql-net:
+
+volumes:
+  db-vol:

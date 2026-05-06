@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Player Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+    h1 { margin-top: 30px; }
+    .card {
+      margin: 20px auto;
+      padding: 20px;
+      width: 320px;
+      background: #1e293b;
+      border-radius: 10px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      padding: 10px 20px;
+      background: #3b82f6;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    th, td {
+      border: 1px solid #334155;
+      padding: 10px;
+    }
+    th { background: #3b82f6; }
+  </style>
+</head>
+
+<body>
+  <h1>⚽ Player Search</h1>
+
+  <div class="card">
+    <input id="age" type="number" placeholder="Enter Age">
+    <input id="number" type="number" placeholder="Enter Kit Number">
+    <button onclick="search()">Search</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Team</th>
+        <th>Number</th>
+        <th>Age</th>
+      </tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+
+<script>
+function search() {
+  const age = document.getElementById("age").value;
+  const number = document.getElementById("number").value;
+
+  let url = "http://192.168.18.128:5000/search?";
+
+  if (age) url += "age=" + age;
+  else if (number) url += "number=" + number;
+  else return alert("Enter age or number");
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const table = document.getElementById("results");
+      table.innerHTML = "";
+
+      data.forEach(p => {
+        table.innerHTML += `
+          <tr>
+            <td>${p.player_name}</td>
+            <td>${p.team}</td>
+            <td>${p.kit_number}</td>
+            <td>${p.age}</td>
+          </tr>`;
+      });
+    });
+}
+</script>
+
+</body>
+</html>
