@@ -72,13 +72,13 @@ docker compose up -d --build
 
 ---
 
-## Backend API
+## Frontend UI 2
 
 ![Backend API](https://github.com/user-attachments/assets/fe382782-d78b-4bd7-a4d4-7a1226df0e10)
 
 ---
 
-## Docker Containers
+## Backend
 
 ![Docker Containers](https://github.com/user-attachments/assets/8d681309-0553-4dca-b25e-d4b8a509366e)
 
